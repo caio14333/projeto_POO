@@ -15,6 +15,15 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('characters.index')" :active="request()->routeIs('characters.*')">
+                        {{ __('Personagens') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')">
+                        {{ __('Itens') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('quests.index')" :active="request()->routeIs('quests.*')">
+                        {{ __('Quests') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -71,6 +80,15 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('characters.index')" :active="request()->routeIs('characters.*')">
+                {{ __('Personagens') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.*')">
+                {{ __('Itens') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('quests.index')" :active="request()->routeIs('quests.*')">
+                {{ __('Quests') }}
             </x-responsive-nav-link>
         </div>
 

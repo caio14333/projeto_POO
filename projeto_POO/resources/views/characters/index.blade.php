@@ -1,122 +1,70 @@
-<x-app-layout src="https://cdn.tailwindcss.com">
-
-@extends('layouts.app')
-
-@section('title', 'Meus Personagens - Taverna do Aventureiro')
-
-@section('content')
-    <div class="row mb-4">
-        <div class="col-12 d-flex justify-content-between align-items-center">
-            <h1 class="display-5">
-                <i class="fas fa-users"></i> Meus Personagens
-            </h1>
-            <a href="{{ route('characters.create') }}" class="btn btn-primary btn-lg">
-                <i class="fas fa-plus-circle"></i> Novo Personagem
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <div>
+                <h2 class="text-2xl font-semibold text-[#f6e7c8]">Meus Personagens</h2>
+                <p class="text-sm text-[#d7c08f]">Gerencie seus heróis e acompanhe o progresso.</p>
+            </div>
+            <a href="{{ route('characters.create') }}" class="inline-flex items-center justify-center rounded-md bg-[#c8862f] px-4 py-2 text-sm font-semibold text-[#1a120c] shadow hover:bg-[#e0a04a]">
+                Novo personagem
             </a>
         </div>
-    </div>
+    </x-slot>
 
-    @if($characters->count() > 0)
-        <!-- Grid de Personagens -->
-        <div class="row">
-            @foreach($characters as $character)
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #8b4513 0%, #d2691e 100%);">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-user-circle"></i> {{ $character->name }}
-                            </h5>
+    <div class="space-y-6">
+        @if($characters->count() > 0)
+            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                @foreach($characters as $character)
+                    <div class="rounded-2xl border border-[#d8c09b] bg-white p-6 shadow-sm">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <h3 class="text-lg font-semibold text-[#2f2419]">{{ $character->name }}</h3>
+                                <p class="mt-1 text-sm text-[#8b6a3d]">{{ $character->class }} · Nível {{ $character->level }}</p>
+                            </div>
+                            <span class="rounded-full bg-[#f7efe2] px-2.5 py-1 text-xs font-semibold text-[#8b6a3d]">{{ $character->level }}</span>
                         </div>
-                        <div class="card-body">
-                            <!-- Classe e Nível -->
-                            <div class="mb-3">
-                                <span class="badge bg-info me-2">{{ $character->class }}</span>
-                                <span class="badge bg-warning">Nível {{ $character->level }}</span>
-                            </div>
 
-                            <!-- HP e MP -->
-                            <div class="mb-3">
-                                <div class="mb-2">
-                                    <small class="d-flex justify-content-between">
-                                        <span><i class="fas fa-heart text-danger"></i> HP</span>
-                                        <span>{{ $character->hp }}/{{ $character->max_hp }}</span>
-                                    </small>
-                                    <div class="progress" style="height: 6px;">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{ ($character->hp / $character->max_hp) * 100 }}%"></div>
-                                    </div>
+                        <div class="mt-4 space-y-3 text-sm text-[#4f3d28]">
+                            <div>
+                                <div class="mb-1 flex items-center justify-between">
+                                    <span>HP</span>
+                                    <span class="font-semibold">{{ $character->hp }}/{{ $character->max_hp }}</span>
                                 </div>
-                                <div>
-                                    <small class="d-flex justify-content-between">
-                                        <span><i class="fas fa-wand-magic-sparkles text-info"></i> MP</span>
-                                        <span>{{ $character->mp }}/{{ $character->max_mp }}</span>
-                                    </small>
-                                    <div class="progress" style="height: 6px;">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: {{ ($character->mp / $character->max_mp) * 100 }}%"></div>
-                                    </div>
+                                <div class="h-2 rounded-full bg-[#f2e6ce]">
+                                    <div class="h-2 rounded-full bg-[#c75d5d]" style="width: {{ max(5, min(100, ($character->hp / max($character->max_hp, 1)) * 100)) }}%"></div>
                                 </div>
                             </div>
-
-                            <!-- Experiência -->
-                            <div class="mb-3">
-                                <small class="text-muted">Experiência: {{ number_format($character->experience) }}</small>
-                            </div>
-
-                            <!-- Atributos Principais -->
-                            <div class="small mb-3">
-                                <div class="row text-center">
-                                    <div class="col-6 mb-2">
-                                        <strong class="text-danger">{{ $character->strength }}</strong><br>
-                                        <small class="text-muted">Força</small>
-                                    </div>
-                                    <div class="col-6 mb-2">
-                                        <strong class="text-success">{{ $character->dexterity }}</strong><br>
-                                        <small class="text-muted">Destreza</small>
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="text-warning">{{ $character->constitution }}</strong><br>
-                                        <small class="text-muted">Constituição</small>
-                                    </div>
-                                    <div class="col-6">
-                                        <strong class="text-info">{{ $character->intelligence }}</strong><br>
-                                        <small class="text-muted">Inteligência</small>
-                                    </div>
+                            <div>
+                                <div class="mb-1 flex items-center justify-between">
+                                    <span>MP</span>
+                                    <span class="font-semibold">{{ $character->mp }}/{{ $character->max_mp }}</span>
+                                </div>
+                                <div class="h-2 rounded-full bg-[#f2e6ce]">
+                                    <div class="h-2 rounded-full bg-[#3f7fbf]" style="width: {{ max(5, min(100, ($character->mp / max($character->max_mp, 1)) * 100)) }}%"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <a href="{{ route('characters.show', $character) }}" class="btn btn-sm btn-info me-2">
-                                <i class="fas fa-eye"></i> Ver
-                            </a>
-                            <a href="{{ route('characters.edit', $character) }}" class="btn btn-sm btn-warning me-2">
-                                <i class="fas fa-edit"></i> Editar
-                            </a>
-                            <form action="{{ route('characters.destroy', $character) }}" method="POST" style="display: inline;">
+
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <a href="{{ route('characters.show', $character) }}" class="rounded-md bg-[#2b1d12] px-3 py-2 text-sm font-semibold text-[#f6e7c8] hover:bg-[#3d2818]">Ver</a>
+                            <a href="{{ route('characters.edit', $character) }}" class="rounded-md border border-[#d8c09b] px-3 py-2 text-sm font-semibold text-[#8b6a3d] hover:bg-[#f7efe2]">Editar</a>
+                            <form action="{{ route('characters.destroy', $character) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja deletar este personagem?');">
-                                    <i class="fas fa-trash"></i> Deletar
-                                </button>
+                                <button type="submit" class="rounded-md bg-[#c75d5d] px-3 py-2 text-sm font-semibold text-white hover:bg-[#a84a4a]" onclick="return confirm('Deseja realmente excluir este personagem?');">Excluir</button>
                             </form>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
 
-        <!-- Paginação -->
-        <div class="row mt-4">
-            <div class="col-12">
+            <div class="mt-4">
                 {{ $characters->links() }}
             </div>
-        </div>
-    @else
-        <!-- Mensagem Vazia -->
-        <div class="alert alert-info" role="alert">
-            <i class="fas fa-info-circle"></i>
-            <strong>Nenhum personagem criado!</strong>
-            <a href="{{ route('characters.create') }}" class="alert-link">Crie seu primeiro personagem agora</a>
-        </div>
-    @endif
-@endsection
-
-    </x-app-layout>
+        @else
+            <div class="rounded-2xl border border-dashed border-[#d8c09b] bg-[#fcf7ee] p-6 text-sm text-[#7a623d]">
+                Nenhum personagem cadastrado ainda. <a href="{{ route('characters.create') }}" class="font-semibold text-[#c8862f]">Criar o primeiro</a>.
+            </div>
+        @endif
+    </div>
+</x-app-layout>
