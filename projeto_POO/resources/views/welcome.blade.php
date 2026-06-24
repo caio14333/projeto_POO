@@ -64,49 +64,49 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 <!-- Personagens -->
-                <div class="rounded-lg p-6 border-2 bg-white dark:bg-gray-800" style="border-color: #d9c9a8;">
+                <div class="rounded-lg p-6 border-2 bg-white dark:bg-[#2a1f15] border-[#d9c9a8] dark:border-[#5c4830] transition-colors">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-11 h-11 rounded-md flex items-center justify-center flex-shrink-0" style="background: #fbeede;">
-                            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#b5651d" stroke-width="1.8">
+                        <div class="w-11 h-11 rounded-md flex items-center justify-center flex-shrink-0 bg-[#fbeede] dark:bg-[#3d2f1f]">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#d2924a" stroke-width="1.8">
                                 <circle cx="12" cy="8" r="3.2"/>
                                 <path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5" stroke-linecap="round"/>
                             </svg>
                         </div>
-                        <h5 class="font-serif font-bold text-lg text-gray-800 dark:text-gray-100" style="font-family: Georgia, serif;">Personagens</h5>
+                        <h5 class="font-serif font-bold text-lg text-gray-800 dark:text-[#f0e3c8]" style="font-family: Georgia, serif;">Personagens</h5>
                     </div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-gray-500 dark:text-[#c9b89a]">
                         Crie e organize os heróis da sua campanha.
                     </p>
                 </div>
 
                 <!-- Itens -->
-                <div class="rounded-lg p-6 border-2 bg-white dark:bg-gray-800" style="border-color: #d9c9a8;">
+                <div class="rounded-lg p-6 border-2 bg-white dark:bg-[#2a1f15] border-[#d9c9a8] dark:border-[#5c4830] transition-colors">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-11 h-11 rounded-md flex items-center justify-center flex-shrink-0" style="background: #fdeaea;">
-                            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#b03a3a" stroke-width="1.8">
+                        <div class="w-11 h-11 rounded-md flex items-center justify-center flex-shrink-0 bg-[#fdeaea] dark:bg-[#3d2520]">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#c75d5d" stroke-width="1.8">
                                 <path d="M4 8l8-4 8 4v8l-8 4-8-4z" stroke-linejoin="round"/>
                                 <path d="M4 8l8 4 8-4M12 12v8" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
-                        <h5 class="font-serif font-bold text-lg text-gray-800 dark:text-gray-100" style="font-family: Georgia, serif;">Itens</h5>
+                        <h5 class="font-serif font-bold text-lg text-gray-800 dark:text-[#f0e3c8]" style="font-family: Georgia, serif;">Itens</h5>
                     </div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-gray-500 dark:text-[#c9b89a]">
                         Controle o inventário sem excesso de telas.
                     </p>
                 </div>
 
                 <!-- Quests -->
-                <div class="rounded-lg p-6 border-2 bg-white dark:bg-gray-800" style="border-color: #d9c9a8;">
+                <div class="rounded-lg p-6 border-2 bg-white dark:bg-[#2a1f15] border-[#d9c9a8] dark:border-[#5c4830] transition-colors">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-11 h-11 rounded-md flex items-center justify-center flex-shrink-0" style="background: #eaf6ea;">
-                            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#3a8f4f" stroke-width="1.8">
+                        <div class="w-11 h-11 rounded-md flex items-center justify-center flex-shrink-0 bg-[#eaf6ea] dark:bg-[#243d28]">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#5fae74" stroke-width="1.8">
                                 <path d="M7 3h10v16l-5-3-5 3z" stroke-linejoin="round"/>
                                 <path d="M9 8h6M9 11h6" stroke-linecap="round"/>
                             </svg>
                         </div>
-                        <h5 class="font-serif font-bold text-lg text-gray-800 dark:text-gray-100" style="font-family: Georgia, serif;">Quests</h5>
+                        <h5 class="font-serif font-bold text-lg text-gray-800 dark:text-[#f0e3c8]" style="font-family: Georgia, serif;">Quests</h5>
                     </div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-gray-500 dark:text-[#c9b89a]">
                         Acompanhe as missões e o progresso do jogo.
                     </p>
                 </div>
@@ -116,3 +116,4 @@
         </div>
     </div>
 </x-app-layout>
+ 
