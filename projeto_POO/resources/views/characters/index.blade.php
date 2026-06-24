@@ -1,3 +1,5 @@
+<x-app-layout src="https://cdn.tailwindcss.com">
+
 @extends('layouts.app')
 
 @section('title', 'Meus Personagens - Taverna do Aventureiro')
@@ -116,3 +118,5 @@
         </div>
     @endif
 @endsection
+
+    </x-app-layout>
