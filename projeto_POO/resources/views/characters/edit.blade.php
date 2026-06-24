@@ -3,228 +3,199 @@
 @section('title', 'Editar ' . $character->name . ' - Taverna do Aventureiro')
 
 @section('content')
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="display-5">
-                <i class="fas fa-edit"></i> Editar Personagem: {{ $character->name }}
-            </h1>
-            <p class="text-muted">Ajuste os atributos e informações do seu herói</p>
+    <div class="space-y-6">
+        <div class="rounded-3xl bg-[#fff7e0] p-6 shadow-xl ring-1 ring-black/5">
+            <div class="max-w-4xl">
+                <h1 class="text-3xl font-semibold text-[#3a2918]">
+                    <i class="fas fa-edit text-[#c8862f]"></i> Editar Personagem: {{ $character->name }}
+                </h1>
+                <p class="mt-3 text-sm text-[#6b5a47]">Ajuste os atributos e informações do seu herói.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-warning">
-                    <h5 class="mb-0">Editar Informações</h5>
+        <div class="grid gap-6 xl:grid-cols-[2fr_1fr]">
+            <section class="rounded-[2rem] bg-white p-6 shadow-xl ring-1 ring-black/5">
+                <div class="mb-6 border-b border-[#e7d7ba] pb-4">
+                    <h2 class="text-xl font-semibold text-[#3a2918]">Editar Informações</h2>
+                    <p class="mt-1 text-sm text-[#7a6751]">Faça alterações no seu personagem e salve as atualizações.</p>
                 </div>
-                <div class="card-body">
-                    <form action="{{ route('characters.update', $character) }}" method="POST">
-                        @csrf
-                        @method('PUT')
 
-                        <!-- Nome do Personagem -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">
-                                <i class="fas fa-scroll"></i> Nome do Personagem
+                <form action="{{ route('characters.update', $character) }}" method="POST" class="space-y-6">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-scroll text-[#c8862f]"></i> Nome do Personagem
                             </label>
                             <input
                                 type="text"
-                                class="form-control @error('name') is-invalid @enderror"
                                 id="name"
                                 name="name"
                                 value="{{ old('name', $character->name) }}"
                                 placeholder="Ex: Aragorn, Merlin, Legolas"
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
                                 required
                             >
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @error('name')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
                         </div>
 
-                        <!-- Classe -->
-                        <div class="mb-3">
-                            <label for="class" class="form-label">
-                                <i class="fas fa-user-tag"></i> Classe
+                        <div>
+                            <label for="class" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-user-tag text-[#8d6b32]"></i> Classe
                             </label>
-                            <select class="form-select @error('class') is-invalid @enderror" id="class" name="class" required>
+                            <select
+                                id="class"
+                                name="class"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
+                            >
                                 <option value="">Selecione uma classe...</option>
                                 @foreach($classes as $cls)
-                                    <option value="{{ $cls }}" {{ old('class', $character->class) === $cls ? 'selected' : '' }}>
-                                        {{ $cls }}
-                                    </option>
+                                    <option value="{{ $cls }}" {{ old('class', $character->class) === $cls ? 'selected' : '' }}>{{ $cls }}</option>
                                 @endforeach
                             </select>
-                            @error('class')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @error('class')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
                         </div>
+                    </div>
 
-                        <!-- Atributos -->
-                        <div class="row">
-                            <!-- Força -->
-                            <div class="col-md-6 mb-3">
-                                <label for="strength" class="form-label">
-                                    <i class="fas fa-fist-raised text-danger"></i> Força (STR)
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control @error('strength') is-invalid @enderror"
-                                    id="strength"
-                                    name="strength"
-                                    value="{{ old('strength', $character->strength) }}"
-                                    min="1"
-                                    max="20"
-                                    required
-                                >
-                                @error('strength')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Destreza -->
-                            <div class="col-md-6 mb-3">
-                                <label for="dexterity" class="form-label">
-                                    <i class="fas fa-running text-success"></i> Destreza (DEX)
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control @error('dexterity') is-invalid @enderror"
-                                    id="dexterity"
-                                    name="dexterity"
-                                    value="{{ old('dexterity', $character->dexterity) }}"
-                                    min="1"
-                                    max="20"
-                                    required
-                                >
-                                @error('dexterity')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Constituição -->
-                            <div class="col-md-6 mb-3">
-                                <label for="constitution" class="form-label">
-                                    <i class="fas fa-shield-alt text-warning"></i> Constituição (CON)
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control @error('constitution') is-invalid @enderror"
-                                    id="constitution"
-                                    name="constitution"
-                                    value="{{ old('constitution', $character->constitution) }}"
-                                    min="1"
-                                    max="20"
-                                    required
-                                >
-                                @error('constitution')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Inteligência -->
-                            <div class="col-md-6 mb-3">
-                                <label for="intelligence" class="form-label">
-                                    <i class="fas fa-brain text-info"></i> Inteligência (INT)
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control @error('intelligence') is-invalid @enderror"
-                                    id="intelligence"
-                                    name="intelligence"
-                                    value="{{ old('intelligence', $character->intelligence) }}"
-                                    min="1"
-                                    max="20"
-                                    required
-                                >
-                                @error('intelligence')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Sabedoria -->
-                            <div class="col-md-6 mb-3">
-                                <label for="wisdom" class="form-label">
-                                    <i class="fas fa-lightbulb text-warning"></i> Sabedoria (WIS)
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control @error('wisdom') is-invalid @enderror"
-                                    id="wisdom"
-                                    name="wisdom"
-                                    value="{{ old('wisdom', $character->wisdom) }}"
-                                    min="1"
-                                    max="20"
-                                    required
-                                >
-                                @error('wisdom')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Carisma -->
-                            <div class="col-md-6 mb-3">
-                                <label for="charisma" class="form-label">
-                                    <i class="fas fa-star text-success"></i> Carisma (CHA)
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control @error('charisma') is-invalid @enderror"
-                                    id="charisma"
-                                    name="charisma"
-                                    value="{{ old('charisma', $character->charisma) }}"
-                                    min="1"
-                                    max="20"
-                                    required
-                                >
-                                @error('charisma')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Nível -->
-                        <div class="mb-3">
-                            <label for="level" class="form-label">
-                                <i class="fas fa-trophy"></i> Nível
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label for="strength" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-fist-raised text-[#c03f3f]"></i> Força (STR)
                             </label>
                             <input
                                 type="number"
-                                class="form-control @error('level') is-invalid @enderror"
-                                id="level"
-                                name="level"
-                                value="{{ old('level', $character->level) }}"
+                                id="strength"
+                                name="strength"
+                                value="{{ old('strength', $character->strength) }}"
                                 min="1"
-                                max="100"
+                                max="20"
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
                                 required
                             >
-                            @error('level')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @error('strength')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
                         </div>
 
-                        <!-- Botões de Ação -->
-                        <div class="d-flex gap-2 mt-4">
-                            <button type="submit" class="btn btn-warning btn-lg">
-                                <i class="fas fa-save"></i> Salvar Alterações
-                            </button>
-                            <a href="{{ route('characters.show', $character) }}" class="btn btn-secondary btn-lg">
-                                <i class="fas fa-times-circle"></i> Cancelar
-                            </a>
+                        <div>
+                            <label for="dexterity" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-running text-[#2f8f56]"></i> Destreza (DEX)
+                            </label>
+                            <input
+                                type="number"
+                                id="dexterity"
+                                name="dexterity"
+                                value="{{ old('dexterity', $character->dexterity) }}"
+                                min="1"
+                                max="20"
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
+                                required
+                            >
+                            @error('dexterity')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
-        <!-- Barra Lateral - Info -->
-        <div class="col-md-4">
-            <div class="card shadow mb-3 bg-warning-subtle">
-                <div class="card-header bg-warning">
-                    <h5 class="mb-0"><i class="fas fa-user-circle"></i> Status Atual</h5>
-                </div>
-                <div class="card-body small">
-                    <ul class="list-unstyled">
+                        <div>
+                            <label for="constitution" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-shield-alt text-[#d08a2f]"></i> Constituição (CON)
+                            </label>
+                            <input
+                                type="number"
+                                id="constitution"
+                                name="constitution"
+                                value="{{ old('constitution', $character->constitution) }}"
+                                min="1"
+                                max="20"
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
+                                required
+                            >
+                            @error('constitution')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                        </div>
+
+                        <div>
+                            <label for="intelligence" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-brain text-[#3b82f6]"></i> Inteligência (INT)
+                            </label>
+                            <input
+                                type="number"
+                                id="intelligence"
+                                name="intelligence"
+                                value="{{ old('intelligence', $character->intelligence) }}"
+                                min="1"
+                                max="20"
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
+                                required
+                            >
+                            @error('intelligence')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                        </div>
+
+                        <div>
+                            <label for="wisdom" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-lightbulb text-[#d6a50b]"></i> Sabedoria (WIS)
+                            </label>
+                            <input
+                                type="number"
+                                id="wisdom"
+                                name="wisdom"
+                                value="{{ old('wisdom', $character->wisdom) }}"
+                                min="1"
+                                max="20"
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
+                                required
+                            >
+                            @error('wisdom')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                        </div>
+
+                        <div>
+                            <label for="charisma" class="block text-sm font-semibold text-[#4a3824]">
+                                <i class="fas fa-star text-[#3d8c5d]"></i> Carisma (CHA)
+                            </label>
+                            <input
+                                type="number"
+                                id="charisma"
+                                name="charisma"
+                                value="{{ old('charisma', $character->charisma) }}"
+                                min="1"
+                                max="20"
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
+                                required
+                            >
+                            @error('charisma')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="level" class="block text-sm font-semibold text-[#4a3824]">
+                            <i class="fas fa-trophy text-[#b37a25]"></i> Nível
+                        </label>
+                        <input
+                            type="number"
+                            id="level"
+                            name="level"
+                            value="{{ old('level', $character->level) }}"
+                            min="1"
+                            max="100"
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#c8862f] focus:outline-none focus:ring-2 focus:ring-[#c8862f]/30"
+                            required
+                        >
+                        @error('level')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[#d6a14f] px-5 py-3 text-sm font-semibold text-[#1a120c] shadow-md shadow-[#d6a14f]/20 hover:bg-[#e9c16b] transition">
+                            <i class="fas fa-save mr-2"></i> Salvar Alterações
+                        </button>
+                        <a href="{{ route('characters.show', $character) }}" class="inline-flex items-center justify-center rounded-2xl border border-[#d8c09b] bg-white px-5 py-3 text-sm font-semibold text-[#8b6a3d] shadow-sm hover:bg-[#f7efe2] transition">
+                            <i class="fas fa-times-circle mr-2"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="space-y-6">
+                <div class="rounded-[2rem] bg-[#fff7e0] p-6 shadow-xl ring-1 ring-black/5">
+                    <h3 class="text-lg font-semibold text-[#3a2918]"><i class="fas fa-user-circle text-[#c8862f]"></i> Status Atual</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-[#6b5a47]">
                         <li><strong>Nome:</strong> {{ $character->name }}</li>
                         <li><strong>Classe:</strong> {{ $character->class }}</li>
                         <li><strong>Nível:</strong> {{ $character->level }}</li>
@@ -235,12 +206,11 @@
                         <li><strong>Última atualização:</strong> {{ $character->updated_at->format('d/m/Y H:i') }}</li>
                     </ul>
                 </div>
-            </div>
 
-            <div class="alert alert-info" role="alert">
-                <i class="fas fa-lightbulb"></i>
-                <strong>Dica:</strong> Alterar Constituição e Inteligência recalculará HP e MP automaticamente!
-            </div>
+                <div class="rounded-[2rem] bg-[#ecf9f1] p-6 shadow-xl ring-1 ring-black/5">
+                    <p class="text-sm text-[#6b5a47]"><strong>Dica:</strong> Alterar Constituição e Inteligência recalculará HP e MP automaticamente!</p>
+                </div>
+            </aside>
         </div>
     </div>
 @endsection

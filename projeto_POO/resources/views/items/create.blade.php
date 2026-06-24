@@ -3,120 +3,231 @@
 @section('title', 'Novo Item - Taverna do Aventureiro')
 
 @section('content')
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="display-5"><i class="fas fa-plus-circle"></i> Criar Novo Item</h1>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary">
-                    <h5 class="mb-0">Formulário de Item</h5>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('items.store') }}" method="POST">
-                        @csrf
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Nome</label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required>
-                                @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tipo</label>
-                                <select class="form-select @error('type') is-invalid @enderror" name="type" required>
-                                    <option value="">Selecione...</option>
-                                    @foreach($types as $key => $label)
-                                        <option value="{{ $key }}" {{ old('type') === $key ? 'selected' : '' }}>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                                @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Descrição</label>
-                            <textarea class="form-control" name="description" rows="3">{{ old('description') }}</textarea>
-                        </div>
-
-                        <h6 class="mt-4 mb-3"><i class="fas fa-star"></i> Modificadores de Atributos</h6>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Força</label>
-                                <input type="number" class="form-control" name="strength_bonus" value="{{ old('strength_bonus', 0) }}" min="-10" max="10" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Destreza</label>
-                                <input type="number" class="form-control" name="dexterity_bonus" value="{{ old('dexterity_bonus', 0) }}" min="-10" max="10" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Constituição</label>
-                                <input type="number" class="form-control" name="constitution_bonus" value="{{ old('constitution_bonus', 0) }}" min="-10" max="10" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Inteligência</label>
-                                <input type="number" class="form-control" name="intelligence_bonus" value="{{ old('intelligence_bonus', 0) }}" min="-10" max="10" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Sabedoria</label>
-                                <input type="number" class="form-control" name="wisdom_bonus" value="{{ old('wisdom_bonus', 0) }}" min="-10" max="10" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Carisma</label>
-                                <input type="number" class="form-control" name="charisma_bonus" value="{{ old('charisma_bonus', 0) }}" min="-10" max="10" required>
-                            </div>
-                        </div>
-
-                        <h6 class="mt-4 mb-3"><i class="fas fa-heart"></i> Modificadores Especiais</h6>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Bônus de HP</label>
-                                <input type="number" class="form-control" name="hp_bonus" value="{{ old('hp_bonus', 0) }}" min="-50" max="100" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Bônus de MP</label>
-                                <input type="number" class="form-control" name="mp_bonus" value="{{ old('mp_bonus', 0) }}" min="-50" max="100" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Dano</label>
-                                <input type="number" class="form-control" name="damage" value="{{ old('damage', 0) }}" min="0" max="50" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Classe de Armadura</label>
-                                <input type="number" class="form-control" name="armor_class" value="{{ old('armor_class', 0) }}" min="0" max="20" required>
-                            </div>
-                        </div>
-
-                        <h6 class="mt-4 mb-3"><i class="fas fa-tag"></i> Informações Comerciais</h6>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Preço</label>
-                                <input type="number" class="form-control" name="price" value="{{ old('price', 0) }}" min="0" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Raridade</label>
-                                <select class="form-select" name="rarity" required>
-                                    @foreach($rarities as $key => $label)
-                                        <option value="{{ $key }}" {{ old('rarity', 1) == $key ? 'selected' : '' }}>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save"></i> Criar Item
-                            </button>
-                            <a href="{{ route('items.index') }}" class="btn btn-secondary btn-lg">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
-                        </div>
-                    </form>
-                </div>
+    <div class="space-y-6">
+        <div class="rounded-3xl bg-[#eef7ff] p-6 shadow-xl ring-1 ring-black/5">
+            <div class="max-w-4xl">
+                <h1 class="text-3xl font-semibold text-[#3a2918]"><i class="fas fa-plus-circle text-[#2f6fb8]"></i> Criar Novo Item</h1>
+                <p class="mt-3 text-sm text-[#6b5a47]">Cadastre armas, armaduras ou objetos mágicos para seu inventário.</p>
             </div>
         </div>
+
+        <section class="rounded-[2rem] bg-white p-6 shadow-xl ring-1 ring-black/5">
+            <div class="mb-6 border-b border-[#e7d7ba] pb-4">
+                <h2 class="text-xl font-semibold text-[#3a2918]">Formulário de Item</h2>
+                <p class="mt-1 text-sm text-[#7a6751]">Defina nome, tipo, atributos e preço do item.</p>
+            </div>
+
+            <form action="{{ route('items.store') }}" method="POST" class="space-y-6">
+                @csrf
+
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Nome</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ old('name') }}"
+                            required
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                        >
+                        @error('name')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Tipo</label>
+                        <select
+                            name="type"
+                            required
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                        >
+                            <option value="">Selecione...</option>
+                            @foreach($types as $key => $label)
+                                <option value="{{ $key }}" {{ old('type') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        @error('type')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-[#4a3824]">Descrição</label>
+                    <textarea
+                        name="description"
+                        rows="3"
+                        class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                    >{{ old('description') }}</textarea>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-[#3a2918]"><i class="fas fa-star text-[#c8862f]"></i> Modificadores de Atributos</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Força</label>
+                            <input
+                                type="number"
+                                name="strength_bonus"
+                                value="{{ old('strength_bonus', 0) }}"
+                                min="-10"
+                                max="10"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Destreza</label>
+                            <input
+                                type="number"
+                                name="dexterity_bonus"
+                                value="{{ old('dexterity_bonus', 0) }}"
+                                min="-10"
+                                max="10"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Constituição</label>
+                            <input
+                                type="number"
+                                name="constitution_bonus"
+                                value="{{ old('constitution_bonus', 0) }}"
+                                min="-10"
+                                max="10"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Inteligência</label>
+                            <input
+                                type="number"
+                                name="intelligence_bonus"
+                                value="{{ old('intelligence_bonus', 0) }}"
+                                min="-10"
+                                max="10"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Sabedoria</label>
+                            <input
+                                type="number"
+                                name="wisdom_bonus"
+                                value="{{ old('wisdom_bonus', 0) }}"
+                                min="-10"
+                                max="10"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Carisma</label>
+                            <input
+                                type="number"
+                                name="charisma_bonus"
+                                value="{{ old('charisma_bonus', 0) }}"
+                                min="-10"
+                                max="10"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-[#3a2918]"><i class="fas fa-heart text-[#bf5f5f]"></i> Modificadores Especiais</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Bônus de HP</label>
+                            <input
+                                type="number"
+                                name="hp_bonus"
+                                value="{{ old('hp_bonus', 0) }}"
+                                min="-50"
+                                max="100"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Bônus de MP</label>
+                            <input
+                                type="number"
+                                name="mp_bonus"
+                                value="{{ old('mp_bonus', 0) }}"
+                                min="-50"
+                                max="100"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Dano</label>
+                            <input
+                                type="number"
+                                name="damage"
+                                value="{{ old('damage', 0) }}"
+                                min="0"
+                                max="50"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Classe de Armadura</label>
+                            <input
+                                type="number"
+                                name="armor_class"
+                                value="{{ old('armor_class', 0) }}"
+                                min="0"
+                                max="20"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-[#3a2918]"><i class="fas fa-tag text-[#8a5d0f]"></i> Informações Comerciais</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Preço</label>
+                            <input
+                                type="number"
+                                name="price"
+                                value="{{ old('price', 0) }}"
+                                min="0"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#4a3824]">Raridade</label>
+                            <select
+                                name="rarity"
+                                required
+                                class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#2f6fb8] focus:outline-none focus:ring-2 focus:ring-[#2f6fb8]/30"
+                            >
+                                @foreach($rarities as $key => $label)
+                                    <option value="{{ $key }}" {{ old('rarity', 1) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[#2f6fb8] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#2f6fb8]/20 hover:bg-[#4c83db] transition">
+                        <i class="fas fa-save mr-2"></i> Criar Item
+                    </button>
+                    <a href="{{ route('items.index') }}" class="inline-flex items-center justify-center rounded-2xl border border-[#d8c09b] bg-white px-5 py-3 text-sm font-semibold text-[#8b6a3d] shadow-sm hover:bg-[#f7efe2] transition">
+                        <i class="fas fa-times mr-2"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </section>
     </div>
 @endsection

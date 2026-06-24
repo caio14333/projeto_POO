@@ -31,8 +31,8 @@ class QuestRequest extends FormRequest
             'gold_reward' => 'required|integer|min:0|max:100000',
             'experience_reward' => 'required|integer|min:0|max:100000',
             'reward_item_id' => 'nullable|exists:items,id',
-            'is_active' => 'required|boolean',
-            'is_repeatable' => 'required|boolean',
+            'is_active' => 'present|boolean',
+            'is_repeatable' => 'present|boolean',
             'difficulty' => 'required|string|in:easy,normal,hard,legendary',
         ];
     }

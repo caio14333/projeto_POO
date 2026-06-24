@@ -3,102 +3,156 @@
 @section('title', 'Nova Missão - Taverna do Aventureiro')
 
 @section('content')
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="display-5"><i class="fas fa-plus-circle"></i> Criar Nova Missão</h1>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary">
-                    <h5 class="mb-0">Formulário de Missão</h5>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('quests.store') }}" method="POST">
-                        @csrf
-
-                        <div class="mb-3">
-                            <label class="form-label">Título</label>
-                            <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required>
-                            @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Descrição</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="4" required>{{ old('description') }}</textarea>
-                            @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Objetivos</label>
-                            <textarea class="form-control" name="objectives" rows="3">{{ old('objectives') }}</textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Recompensas (descrição)</label>
-                            <textarea class="form-control" name="rewards" rows="3">{{ old('rewards') }}</textarea>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Nível Recomendado</label>
-                                <input type="number" class="form-control" name="recommended_level" value="{{ old('recommended_level', 1) }}" min="1" max="100" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Dificuldade</label>
-                                <select class="form-select" name="difficulty" required>
-                                    @foreach($difficulties as $key => $label)
-                                        <option value="{{ $key }}" {{ old('difficulty', 'normal') === $key ? 'selected' : '' }}>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Recompensa em Ouro</label>
-                                <input type="number" class="form-control" name="gold_reward" value="{{ old('gold_reward', 0) }}" min="0" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Recompensa em XP</label>
-                                <input type="number" class="form-control" name="experience_reward" value="{{ old('experience_reward', 0) }}" min="0" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Item de Recompensa</label>
-                                <select class="form-select" name="reward_item_id">
-                                    <option value="">Nenhum</option>
-                                    @foreach($items as $item)
-                                        <option value="{{ $item->id }}" {{ old('reward_item_id') == $item->id ? 'selected' : '' }}>
-                                            {{ $item->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Status</label>
-                                <div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_active">Ativa</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="is_repeatable" name="is_repeatable" value="1" {{ old('is_repeatable') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_repeatable">Repetível</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save"></i> Criar Missão
-                            </button>
-                            <a href="{{ route('quests.index') }}" class="btn btn-secondary btn-lg">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
-                        </div>
-                    </form>
-                </div>
+    <div class="space-y-6">
+        <div class="rounded-3xl bg-[#f7e8ff] p-6 shadow-xl ring-1 ring-black/5">
+            <div class="max-w-4xl">
+                <h1 class="text-3xl font-semibold text-[#3a2918]"><i class="fas fa-plus-circle text-[#8862c8]"></i> Criar Nova Missão</h1>
+                <p class="mt-3 text-sm text-[#6b5a47]">Defina a missão, suas recompensas e o nível recomendado.</p>
             </div>
         </div>
+
+        <section class="rounded-[2rem] bg-white p-6 shadow-xl ring-1 ring-black/5">
+            <div class="mb-6 border-b border-[#e7d7ba] pb-4">
+                <h2 class="text-xl font-semibold text-[#3a2918]">Formulário de Missão</h2>
+                <p class="mt-1 text-sm text-[#7a6751]">Preencha os detalhes para criar uma nova quest.</p>
+            </div>
+
+            <form action="{{ route('quests.store') }}" method="POST" class="space-y-6">
+                @csrf
+
+                <div>
+                    <label class="block text-sm font-semibold text-[#4a3824]">Título</label>
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ old('title') }}"
+                        required
+                        class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                    >
+                    @error('title')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-[#4a3824]">Descrição</label>
+                    <textarea
+                        name="description"
+                        rows="4"
+                        required
+                        class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                    >{{ old('description') }}</textarea>
+                    @error('description')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-[#4a3824]">Objetivos</label>
+                    <textarea
+                        name="objectives"
+                        rows="3"
+                        class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                    >{{ old('objectives') }}</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-[#4a3824]">Recompensas (descrição)</label>
+                    <textarea
+                        name="rewards"
+                        rows="3"
+                        class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                    >{{ old('rewards') }}</textarea>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Nível Recomendado</label>
+                        <input
+                            type="number"
+                            name="recommended_level"
+                            value="{{ old('recommended_level', 1) }}"
+                            min="1"
+                            max="100"
+                            required
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Dificuldade</label>
+                        <select
+                            name="difficulty"
+                            required
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                        >
+                            @foreach($difficulties as $key => $label)
+                                <option value="{{ $key }}" {{ old('difficulty', 'normal') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Recompensa em Ouro</label>
+                        <input
+                            type="number"
+                            name="gold_reward"
+                            value="{{ old('gold_reward', 0) }}"
+                            min="0"
+                            required
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Recompensa em XP</label>
+                        <input
+                            type="number"
+                            name="experience_reward"
+                            value="{{ old('experience_reward', 0) }}"
+                            min="0"
+                            required
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Item de Recompensa</label>
+                        <select
+                            name="reward_item_id"
+                            class="mt-2 block w-full rounded-2xl border border-slate-300 bg-[#fcf7ee] px-4 py-3 text-sm text-[#2f2419] shadow-sm focus:border-[#8862c8] focus:outline-none focus:ring-2 focus:ring-[#8862c8]/30"
+                        >
+                            <option value="">Nenhum</option>
+                            @foreach($items as $item)
+                                <option value="{{ $item->id }}" {{ old('reward_item_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#4a3824]">Status</label>
+                        <div class="mt-2 space-y-2">
+                            <label class="inline-flex items-center gap-2 rounded-2xl bg-[#f7f1e4] px-4 py-3">
+                                <input type="hidden" name="is_active" value="0" />
+                                <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }} class="h-4 w-4 rounded border-slate-300 text-[#c8862f] focus:ring-[#c8862f]" />
+                                <span class="text-sm text-[#4a3824]">Ativa</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 rounded-2xl bg-[#f7f1e4] px-4 py-3">
+                                <input type="hidden" name="is_repeatable" value="0" />
+                                <input type="checkbox" name="is_repeatable" value="1" {{ old('is_repeatable') ? 'checked' : '' }} class="h-4 w-4 rounded border-slate-300 text-[#c8862f] focus:ring-[#c8862f]" />
+                                <span class="text-sm text-[#4a3824]">Repetível</span>
+                            </label>
+                        </div>
+                        @error('is_active')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                        @error('is_repeatable')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[#8862c8] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#8862c8]/20 hover:bg-[#9d7be3] transition">
+                        <i class="fas fa-save mr-2"></i> Criar Missão
+                    </button>
+                    <a href="{{ route('quests.index') }}" class="inline-flex items-center justify-center rounded-2xl border border-[#d8c09b] bg-white px-5 py-3 text-sm font-semibold text-[#8b6a3d] shadow-sm hover:bg-[#f7efe2] transition">
+                        <i class="fas fa-times mr-2"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </section>
     </div>
 @endsection
