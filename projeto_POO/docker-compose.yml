@@ -1,0 +1,112 @@
+version: "3.8"
+
+services:
+
+  # ---------------------------------------------------------
+  # PHP-FPM (executa o código Laravel)
+  # ---------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: taverna_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    env_file:
+      - .env.docker
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE:-taverna}
+      - DB_USERNAME=${DB_USERNAME:-taverna_user}
+      - DB_PASSWORD=${DB_PASSWORD:-taverna_pass}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - taverna_net
+
+  # ---------------------------------------------------------
+  # Nginx (servidor web, recebe as requisições HTTP)
+  # ---------------------------------------------------------
+  webserver:
+    image: nginx:stable-alpine
+    container_name: taverna_webserver
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - taverna_net
+
+  # ---------------------------------------------------------
+  # MySQL (banco de dados)
+  # ---------------------------------------------------------
+  db:
+    image: mysql:8.0
+    container_name: taverna_db
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE:-taverna}
+      - MYSQL_USER=${DB_USERNAME:-taverna_user}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-taverna_pass}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-root_pass}
+    ports:
+      - "3306:3306"
+    volumes:
+      - taverna_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root_pass}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - taverna_net
+
+  # ---------------------------------------------------------
+  # phpMyAdmin (opcional, pra inspecionar o banco visualmente)
+  # ---------------------------------------------------------
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: taverna_phpmyadmin
+    restart: unless-stopped
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=${DB_USERNAME:-taverna_user}
+      - PMA_PASSWORD=${DB_PASSWORD:-taverna_pass}
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - taverna_net
+
+  # ---------------------------------------------------------
+  # Node (builda o CSS/JS do Vite uma vez e encerra)
+  # ---------------------------------------------------------
+  node:
+    image: node:20-alpine
+    container_name: taverna_node
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    command: sh -c "npm install && npm run build"
+    networks:
+      - taverna_net
+
+networks:
+  taverna_net:
+    driver: bridge
+
+volumes:
+  taverna_db_data:
+    driver: local
